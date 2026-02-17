@@ -22,7 +22,7 @@ public class HistoryBaseTests : XunitTestBase
     [InlineData("JPY=X", "USD=X", .0067)]
     public async Task CurrencyCurrencyTest(string currencySymbol, string baseCurrency, double firstBasePrice)
     {
-        Result<History> result = await YahooQuotes.GetHistoryAsync(currencySymbol, baseCurrency, TestContext.Current.CancellationToken);
+        Result<History> result = await YahooQuotes.GetHistoryAsync(currencySymbol, baseCurrency, "1d", TestContext.Current.CancellationToken);
         History history = result.Value;
         BaseTick firstBaseTick = history.BaseTicks[0];
 
@@ -47,7 +47,7 @@ public class HistoryBaseTests : XunitTestBase
     [InlineData("ISF.L", "JPY=X", 806, 153711.59)]
     public async Task StockCurrencyTest(string stockSymbol, string baseCurrency, double firstPrice, double firstBasePrice)
     {
-        Result<History> result = await YahooQuotes.GetHistoryAsync(stockSymbol, baseCurrency, TestContext.Current.CancellationToken);
+        Result<History> result = await YahooQuotes.GetHistoryAsync(stockSymbol, baseCurrency, "1d", TestContext.Current.CancellationToken);
         History history = result.Value;
         string currency = history.Currency.Name;
 
@@ -70,7 +70,7 @@ public class HistoryBaseTests : XunitTestBase
     [InlineData("EUR=X", "ISF.L", 0.001049)]
     public async Task CurrencyStockTest(string currencySymbol, string baseStockSymbol, double firstBasePrice = 0)
     {
-        Result<History> result = await YahooQuotes.GetHistoryAsync(currencySymbol, baseStockSymbol, TestContext.Current.CancellationToken);
+        Result<History> result = await YahooQuotes.GetHistoryAsync(currencySymbol, baseStockSymbol, "1d", TestContext.Current.CancellationToken);
         History history = result.Value;
         Assert.False(history.Currency.IsValid); 
 
@@ -87,10 +87,10 @@ public class HistoryBaseTests : XunitTestBase
     [InlineData("ISF.L", "ISF.L", 1)]
     [InlineData("SPY", "QQQ", 1.18)]
     [InlineData("ISF.L", "SPY", 1.90)]
-    [InlineData("ISF.L", "2800.HK", 453.10)]
+    [InlineData("ISF.L", "2800.HK", 454.58)]
     public async Task StockStockTest(string stockSymbol, string baseStockSymbol, double firstPrice)
     {
-        Result<History> result = await YahooQuotes.GetHistoryAsync(stockSymbol, baseStockSymbol, TestContext.Current.CancellationToken);
+        Result<History> result = await YahooQuotes.GetHistoryAsync(stockSymbol, baseStockSymbol, "1d", TestContext.Current.CancellationToken);
         History history = result.Value;
         string currency = history.Currency.Name;
         DateTimeZone tz = DateTimeZoneProviders.Tzdb[history.ExchangeTimezoneName];

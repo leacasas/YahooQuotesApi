@@ -1,7 +1,6 @@
 ﻿using NodaTime;
 using System.Collections.Immutable;
 using System.Text.Json;
-using System.Threading;
 namespace YahooQuotesApi.MinTest;
 
 public class Tests(ITestOutputHelper output) : XunitTestBase(output)
@@ -14,7 +13,7 @@ public class Tests(ITestOutputHelper output) : XunitTestBase(output)
         const string symbol = "GC=F";
 
         Snapshot? snapshot = await YahooQuotes.GetSnapshotAsync(symbol, TestContext.Current.CancellationToken);
-        Result<History> result = await YahooQuotes.GetHistoryAsync(symbol, "EUR=X", TestContext.Current.CancellationToken);
+        Result<History> result = await YahooQuotes.GetHistoryAsync(symbol, "EUR=X", "1d", TestContext.Current.CancellationToken);
         ;
     }
 
@@ -32,7 +31,7 @@ public class Tests(ITestOutputHelper output) : XunitTestBase(output)
     [Fact]
     public async Task HistoryTest()
     {
-        Result<History> result = await YahooQuotes.GetHistoryAsync("MSFT", "", TestContext.Current.CancellationToken);
+        Result<History> result = await YahooQuotes.GetHistoryAsync("MSFT", "", "1d", TestContext.Current.CancellationToken);
         History history = result.Value;
 
         Assert.Equal("Microsoft Corporation", history.LongName);

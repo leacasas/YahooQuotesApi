@@ -48,7 +48,7 @@ public class Examples
             .WithHistoryStartDate(Instant.FromUtc(2024, 10, 1, 0, 0))
             .Build();
 
-        Result<History> result = await yahooQuotes.GetHistoryAsync("MSFT", "", TestContext.Current.CancellationToken);
+        Result<History> result = await yahooQuotes.GetHistoryAsync("MSFT", "", "1d", TestContext.Current.CancellationToken);
         History history = result.Value;
 
         Assert.Equal("Microsoft Corporation", history.LongName);
@@ -73,7 +73,7 @@ public class Examples
             .DoNotUseAdjustedClose() // ?
             .Build();
 
-        Result<History> result = await yahooQuotes.GetHistoryAsync("ASML.AS", "USD=X", TestContext.Current.CancellationToken);
+        Result<History> result = await yahooQuotes.GetHistoryAsync("ASML.AS", "USD=X", "1d", TestContext.Current.CancellationToken);
         History history = result.Value;
 
         Assert.Equal("ASML Holding N.V.", history.LongName);
