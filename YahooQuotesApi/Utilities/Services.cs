@@ -52,8 +52,10 @@ internal static class Services
                 //client.Timeout = TimeSpan.FromSeconds(10); // default: 100 seconds
                 if (name == "HttpV2")
                 {
-                    client.DefaultRequestVersion = new Version(2, 0);
-                    client.DefaultVersionPolicy = HttpVersionPolicy.RequestVersionOrHigher;
+                    client.DefaultRequestVersion = HttpVersion.Version20;
+                    // Yahoo currently negotiates HTTP/1.1 on these endpoints, so prefer HTTP/2
+                    // without requiring it during TLS ALPN negotiation.
+                    client.DefaultVersionPolicy = HttpVersionPolicy.RequestVersionOrLower;
                 }
             })
 

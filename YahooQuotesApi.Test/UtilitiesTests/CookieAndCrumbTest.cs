@@ -7,7 +7,7 @@ public class CookieAndCrumbTests : XunitTestBase
         YahooQuotes = new YahooQuotesBuilder().WithLogger(Logger).Build();
 
     [Fact]
-    public async Task TestCookieAndCrumb()
+    public async Task CanGetCookieAndCrumbWhenYahooFallsBackToHttp11()
     {
         (string[] cookies, string crumb) = await YahooQuotes.GetCookieAndCrumbAsync();
         Assert.NotEmpty(crumb);
