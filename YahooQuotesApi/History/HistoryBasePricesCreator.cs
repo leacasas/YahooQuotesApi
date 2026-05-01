@@ -6,6 +6,8 @@ public sealed class HistoryBasePricesCreator
     private ILogger Logger { get; }
     private bool UseAdjustedClose { get; }
     private Instant HistoryStartDate { get; }
+    private Instant HistoryEndDate { get; }
+
     public HistoryBasePricesCreator(IClock clock, ILogger logger, YahooQuotesBuilder builder)
     {
         Clock = clock;
@@ -13,6 +15,7 @@ public sealed class HistoryBasePricesCreator
         ArgumentNullException.ThrowIfNull(builder, nameof(builder));
         UseAdjustedClose = builder.UseAdjustedClose;
         HistoryStartDate = builder.HistoryStartDate;
+        HistoryEndDate = builder.HistoryEndDate;
     }
 
     internal Dictionary<Symbol, Result<History>> Create(HashSet<Symbol> symbols, Symbol baseSymbol, Dictionary<Symbol, Result<History>> results)

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging.Abstractions;
 using System.Threading.RateLimiting;
 using YahooQuotesApi.Utilities;
+
 namespace YahooQuotesApi;
 
 public sealed record class YahooQuotesBuilder
@@ -29,10 +30,16 @@ public sealed record class YahooQuotesBuilder
         this with { HistoryCacheDuration = duration };
 
     internal Instant HistoryStartDate { get; private init; } = Instant.FromUtc(1970, 1, 1, 0, 0, 0);
+    internal Instant HistoryEndDate { get; private init; } = Instant.FromUtc(1970, 1, 1, 0, 0, 0);
+
     public YahooQuotesBuilder WithHistoryStartDate(Instant start) =>
         this with { HistoryStartDate = start };
+    
+    public YahooQuotesBuilder WithHistoryEndDate(Instant end) =>
+        this with { HistoryEndDate = end };
 
     internal bool UseAdjustedClose { get; private init; } = true;
+
     internal YahooQuotesBuilder DoNotUseAdjustedClose() =>
         this with { UseAdjustedClose = false };
 

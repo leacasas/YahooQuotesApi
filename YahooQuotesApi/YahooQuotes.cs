@@ -1,5 +1,5 @@
-﻿using NodaTime;
-using System.Text.Json;
+﻿using System.Text.Json;
+
 namespace YahooQuotesApi;
 
 public sealed class YahooQuotes(ILogger logger, CookieAndCrumb cookieAndCrumb, YahooSnapshot snapshot, YahooHistory history,  YahooModules modules)
@@ -42,7 +42,6 @@ public sealed class YahooQuotes(ILogger logger, CookieAndCrumb cookieAndCrumb, Y
 
     public async Task<Dictionary<Symbol, Result<History>>> GetHistoryAsync(IEnumerable<Symbol> symbols, Symbol baseSymbol = default, string interval = "1d", CancellationToken ct = default) =>
         await History.GetHistoryAsync(symbols, baseSymbol, interval, ct).ConfigureAwait(false);
-
 
 
     public async Task<Result<JsonProperty>> GetModuleAsync(string symbol, string module, CancellationToken ct = default)

@@ -1,8 +1,7 @@
 ﻿using System.IO;
 using System.Net.Http;
-using System.Text.Json;
 using System.Net.Http.Headers;
-using NodaTime;
+using System.Text.Json;
 
 namespace YahooQuotesApi;
 
@@ -11,6 +10,7 @@ public sealed class YahooHistory
     private ILogger Logger { get; }
     private CookieAndCrumb CookieAndCrumb { get; }
     private Instant Start { get; }
+    private Instant End { get; }
     private IHttpClientFactory HttpClientFactory { get; }
     private HistoryBasePricesCreator HistoryBasePricesCreator { get; }
     private HistoryCreator HistoryCreator { get; }
@@ -22,6 +22,7 @@ public sealed class YahooHistory
         Logger = logger;
         CookieAndCrumb = crumbService;
         Start = builder.HistoryStartDate;
+        End = builder.HistoryEndDate;
         HttpClientFactory = httpClientFactory;
         HistoryCreator = hc;
         HistoryBasePricesCreator = hbc;
@@ -142,7 +143,7 @@ public sealed class YahooHistory
             "events=history,div,split" +
             $"&interval={interval}" +
             $"&period1={Start.ToUnixTimeSeconds()}" +
-            $"&period2={Instant.MaxValue.ToUnixTimeSeconds()}" +
+            $"&period2={(End == default ? Instant.MaxValue.ToUnixTimeSeconds() : End.ToUnixTimeSeconds())}" +
             $"&crumb={crumb}";
         return new Uri(url);
     }

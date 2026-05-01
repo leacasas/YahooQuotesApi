@@ -2,11 +2,11 @@
 using System.IO;
 using System.Reflection;
 using System.Text.Json;
+
 namespace YahooQuotesApi;
 
 public sealed class HistoryCreator(IClock clock, ILogger logger)
 {
-    private IClock Clock { get; } = clock;
     private ILogger Logger { get; } = logger;
 
     internal Result<History> CreateFromJson(JsonDocument jdoc, string symbol)
