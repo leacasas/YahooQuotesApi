@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
 using NodaTime;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
+
 namespace YahooQuotesApi.Demo;
 
 public static class Program
@@ -24,21 +24,20 @@ public static class Program
 
         Console.WriteLine("Completed!");
 
-        // testing 1m intervals for YPFD.BA (Arg)
-        // It is good practice to use 'long' for Unix timestamps to avoid overflow
-        long startTimestamp = 1776705600L;
-        long endTimestamp = 1777051800L;
+        // Testing 1m intervals for YPFD.BA (Arg), mirroring Yahoo chart API
+        long period1 = 1776705600L; // 2026-04-20T17:20:00Z
+        long period2 = 1777051800L;   // 2026-04-24T17:30:00Z
 
-        // Parse to NodaTime.Instant
-        Instant start = Instant.FromUnixTimeSeconds(startTimestamp);
-        Instant end = Instant.FromUnixTimeSeconds(endTimestamp);
+        Instant start = Instant.FromUnixTimeSeconds(period1);
+        Instant end = Instant.FromUnixTimeSeconds(period2);
 
         YahooQuotes dailyYQ = new YahooQuotesBuilder()
             .WithLogger(logger)
             .WithHistoryStartDate(start)
+            .WithHistoryEndDate(end)
             .Build();
 
-        var results = await dailyYQ.GetHistoryAsync("YPFD.BA", "YPFD.BA", "1m");
+        var results = await dailyYQ.GetHistoryAsync("YPFD.BA", "", "1m");
 
         if(results.HasError)
         {
